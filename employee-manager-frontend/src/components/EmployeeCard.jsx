@@ -12,14 +12,18 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { EditEmployeeForm } from "./EditEmployeeForm";
 
-export const EmployeeCard = ({ ...employee }) => {
+export const EmployeeCard = ({ employee }) => {
   return (
     <Card maxW={"xl"}>
       <CardBody>
         <Image src={employee.imageUrl} />
         <Stack mt={"6"} spacing={"3"}>
-          <Heading size={"md"}>{employee.name}</Heading>
+          <Heading size={"md"}>
+            <span>{employee.id}. </span>
+            {employee.name}
+          </Heading>
           <Text color={"blue.400"} fontSize={"2xl"}>
             {employee.email}
           </Text>
@@ -36,7 +40,7 @@ export const EmployeeCard = ({ ...employee }) => {
                 View Employee
               </Button>
               <Button variant={"ghost"} colorScheme="green" size={"xs"}>
-                Edit Employee
+                <EditEmployeeForm employee={employee} />
               </Button>
               <Button variant={"outline"} colorScheme="red" size={"xs"}>
                 Delete Employee
