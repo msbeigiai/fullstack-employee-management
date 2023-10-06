@@ -1,9 +1,11 @@
 import {
+  Box,
   Button,
   ButtonGroup,
   Card,
   CardBody,
   CardFooter,
+  Center,
   Divider,
   Heading,
   Image,
@@ -13,7 +15,7 @@ import {
 
 export const EmployeeCard = ({ ...employee }) => {
   return (
-    <Card maxW={"sm"}>
+    <Card maxW={"xl"}>
       <CardBody>
         <Image src={employee.imageUrl} />
         <Stack mt={"6"} spacing={"3"}>
@@ -27,14 +29,21 @@ export const EmployeeCard = ({ ...employee }) => {
       </CardBody>
       <Divider />
       <CardFooter>
-        <ButtonGroup spacing={2}>
-          <Button variant={"solid"} colorScheme="blue">
-            View Employee
-          </Button>
-          <Button variant={"ghost"} colorScheme="green">
-            Edit Employee
-          </Button>
-        </ButtonGroup>
+        <Center>
+          <Box w={"full"}>
+            <ButtonGroup spacing={1}>
+              <Button variant={"solid"} colorScheme="blue" size={"xs"}>
+                View Employee
+              </Button>
+              <Button variant={"ghost"} colorScheme="green" size={"xs"}>
+                Edit Employee
+              </Button>
+              <Button variant={"outline"} colorScheme="red" size={"xs"}>
+                Delete Employee
+              </Button>
+            </ButtonGroup>
+          </Box>
+        </Center>
       </CardFooter>
     </Card>
   );

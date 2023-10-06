@@ -17,7 +17,8 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping
-    public ResponseEntity<List<Employee>> getAllEmployees() {
+    public ResponseEntity<List<Employee>> getAllEmployees() throws InterruptedException {
+        Thread.sleep(3000);
         return ResponseEntity.ok()
                 .body(
                         employeeService.findAllEmployees()
