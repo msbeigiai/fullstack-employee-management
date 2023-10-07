@@ -40,7 +40,8 @@ export const EmployeeCard = ({employee, fetchEmployee}) => {
                             email: employee.email,
                             jobTitle: employee.jobTitle,
                             phone: employee.phone,
-                            employeeCode: employee.employeeCode
+                            employeeCode: employee.employeeCode,
+                            imageUrl: employee.imageUrl
                         }}/>
                     </Stack>
                     <Stack>

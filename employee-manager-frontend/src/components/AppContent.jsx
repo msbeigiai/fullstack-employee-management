@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {getEmployees} from "../services/client";
-import {Header} from "./Header";
+import Header from "./Header.jsx";
 import {EmployeeCard} from "./EmployeeCard";
 import {
     SimpleGrid,

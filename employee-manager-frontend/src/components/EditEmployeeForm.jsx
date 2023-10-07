@@ -61,6 +61,14 @@ export const EditEmployeeForm = ({employee, fetchEmployee, initialValues}) => {
                     <ModalHeader>Update Employee</ModalHeader>
                     <ModalCloseButton/>
                     <ModalBody pb={6}>
+                        {/*<VStack spacing={"5"} mb={"5"}>
+                            <Image
+                                borderRadius={"full"}
+                                boxSize={"150px"}
+                                objectFit={"cover"}
+                                src={customerProfilePictureUrl(customerId)}
+                            />
+                        </VStack>*/}
                         <Formik
                             initialValues={initialValues}
                             validationSchema={Yup.object({
