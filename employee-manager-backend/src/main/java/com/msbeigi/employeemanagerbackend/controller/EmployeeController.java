@@ -1,6 +1,7 @@
 package com.msbeigi.employeemanagerbackend.controller;
 
 import com.msbeigi.employeemanagerbackend.entity.Employee;
+import com.msbeigi.employeemanagerbackend.model.EmployeeRequestBody;
 import com.msbeigi.employeemanagerbackend.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class EmployeeController {
 
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees() throws InterruptedException {
-        Thread.sleep(3000);
+        Thread.sleep(1500);
 //        throw new RuntimeException("Nothing fetched");
         return ResponseEntity.ok()
                 .body(
@@ -42,18 +43,17 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long id,
-                                                   @RequestBody Employee employee) {
+                                                   @RequestBody EmployeeRequestBody employeeRequestBody) {
 
         Employee updateEmployee = employeeService.findEmployeeById(id);
 
-        updateEmployee.setEmployeeCode(employee.getEmployeeCode());
-        updateEmployee.setEmail(employee.getEmail());
-        updateEmployee.setName(employee.getName());
-        updateEmployee.setPhone(updateEmployee.getPhone());
-        updateEmployee.setImageUrl(updateEmployee.getImageUrl());
-        updateEmployee.setJobTitle(updateEmployee.getJobTitle());
+        updateEmployee.setEmail(employeeRequestBody.email());
+        updateEmployee.setName(employeeRequestBody.name());
+        updateEmployee.setPhone(employeeRequestBody.phone());
+        updateEmployee.setImageUrl(employeeRequestBody.imageUrl());
+        updateEmployee.setJobTitle(employeeRequestBody.jobTitle());
 
-        employeeService.updateEmployee(employee);
+        employeeService.updateEmployee(updateEmployee);
 
         return new ResponseEntity<>(updateEmployee, HttpStatus.OK);
     }
