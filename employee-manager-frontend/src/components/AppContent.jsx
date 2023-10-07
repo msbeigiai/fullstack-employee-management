@@ -18,15 +18,16 @@ export const AppContent = () => {
 
   const fetchEmployees = () => {
     setLoading(true);
+    console.log("before = " + loading);
     getEmployees()
       .then((res) => {
-        console.log(res.data);
         setEmployees(res.data);
       })
       .catch((err) => {
         setError(err.respone.data.message);
       })
       .finally(setLoading(false));
+    console.log("after = " + loading);
   };
 
   useEffect(() => {
@@ -34,16 +35,24 @@ export const AppContent = () => {
   }, []);
 
   if (loading) {
-    console.log("loading.....");
-    return <Spinner />;
+    console.log("loading...");
+    return (
+      <Stack>
+        <Spinner mt={30} size={"lg"} />
+      </Stack>
+    );
   }
 
   if (err) {
-    return <Heading>Ooops! there was an error!</Heading>;
+    return <Heading>Ooops! there was an error!: {err}</Heading>;
   }
 
   if (employees.length <= 0) {
-    return <Heading>No employee available</Heading>;
+    return (
+      <Stack direction={"row"} justify={"center"}>
+        <Heading>No employee available</Heading>
+      </Stack>
+    );
   }
 
   return (

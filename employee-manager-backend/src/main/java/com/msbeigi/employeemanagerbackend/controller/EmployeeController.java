@@ -19,6 +19,7 @@ public class EmployeeController {
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees() throws InterruptedException {
         Thread.sleep(3000);
+//        throw new RuntimeException("Nothing fetched");
         return ResponseEntity.ok()
                 .body(
                         employeeService.findAllEmployees()

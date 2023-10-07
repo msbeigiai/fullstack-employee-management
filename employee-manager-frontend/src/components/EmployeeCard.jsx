@@ -1,11 +1,8 @@
 import {
-  Box,
   Button,
-  ButtonGroup,
   Card,
   CardBody,
   CardFooter,
-  Center,
   Divider,
   Heading,
   Image,
@@ -33,21 +30,16 @@ export const EmployeeCard = ({ employee }) => {
       </CardBody>
       <Divider />
       <CardFooter>
-        <Center>
-          <Box w={"full"}>
-            <ButtonGroup spacing={1}>
-              <Button variant={"solid"} colorScheme="blue" size={"xs"}>
-                View Employee
-              </Button>
-              <Button variant={"ghost"} colorScheme="green" size={"xs"}>
-                <EditEmployeeForm employee={employee} />
-              </Button>
-              <Button variant={"outline"} colorScheme="red" size={"xs"}>
-                Delete Employee
-              </Button>
-            </ButtonGroup>
-          </Box>
-        </Center>
+        <Stack direction={"row"} justify={"center"} spacing={3} p={2}>
+          <Stack>
+            <EditEmployeeForm employee={employee} />
+          </Stack>
+          <Stack>
+            <Button variant={"outline"} colorScheme="red" size={"sm"}>
+              Delete Employee
+            </Button>
+          </Stack>
+        </Stack>
       </CardFooter>
     </Card>
   );
