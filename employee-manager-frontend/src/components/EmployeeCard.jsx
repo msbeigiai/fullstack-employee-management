@@ -10,6 +10,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 import {EditEmployeeForm} from "./EditEmployeeForm";
+import DeleteCustomerDialog from "./DeleteCustomerDialog.jsx";
 
 export const EmployeeCard = ({employee, fetchEmployee}) => {
     return (
@@ -44,9 +45,7 @@ export const EmployeeCard = ({employee, fetchEmployee}) => {
                         }}/>
                     </Stack>
                     <Stack>
-                        <Button variant={"outline"} colorScheme="red" size={"sm"}>
-                            Delete Employee
-                        </Button>
+                        <DeleteCustomerDialog name={employee.name} id={employee.id} fetchEmployee={fetchEmployee} />
                     </Stack>
                 </Stack>
             </CardFooter>

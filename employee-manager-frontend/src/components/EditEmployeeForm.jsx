@@ -13,6 +13,7 @@ import React from "react";
 import {Formik, Form, useField} from "formik";
 import * as Yup from "yup";
 import {updateEmployee} from "../services/client";
+import {errorNotification, successNotification} from "../services/notification.js";
 
 const MyTextInput = ({label, ...props}) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -84,14 +85,14 @@ export const EditEmployeeForm = ({employee, fetchEmployee, initialValues}) => {
                                 updateEmployee(employee.id, updatedCustomer)
                                     .then((res) => {
                                         console.log(res);
-                                        /* successNotification(
+                                         successNotification(
                                           "Customer updated",
                                           `${updatedCustomer.name} was successfully updated`
-                                        );*/
+                                        );
                                         fetchEmployee();
                                     })
                                     .catch((err) => {
-                                        // errorNotification(err.code, err.response.data.message);
+                                        errorNotification(err.code, err.response.data.message);
                                         console.log(err.code, err.response.data.message);
                                     })
                                     .finally(() => {

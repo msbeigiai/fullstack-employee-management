@@ -19,3 +19,11 @@ export const updateEmployee = async (id, updatedEmployee) => {
     throw e;
   }
 };
+
+export async function deleteEmployee(id) {
+  try {
+    return await axios.delete(`${URL}/api/v1/employees/${id}`);
+  } catch (e) {
+    throw e;
+  }
+}
