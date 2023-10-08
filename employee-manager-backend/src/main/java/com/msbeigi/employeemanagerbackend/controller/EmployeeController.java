@@ -36,8 +36,19 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
-        Employee newEmployee = employeeService.addEmployee(employee);
+    public ResponseEntity<Employee> addEmployee(
+            @RequestBody EmployeeRequestBody employeeRequestBody) {
+
+        Employee newEmployee = new Employee();
+
+        newEmployee.setName(employeeRequestBody.name());
+        newEmployee.setEmail(employeeRequestBody.email());
+        newEmployee.setJobTitle(employeeRequestBody.jobTitle());
+        newEmployee.setPhone(employeeRequestBody.phone());
+        newEmployee.setImageUrl(employeeRequestBody.imageUrl());
+
+        employeeService.addEmployee(newEmployee);
+
         return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
     }
 
