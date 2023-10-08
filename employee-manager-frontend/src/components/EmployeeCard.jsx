@@ -4,7 +4,6 @@ import {
     Card,
     CardBody,
     CardFooter,
-    Divider,
     Heading,
     Image,
     Stack,
@@ -14,7 +13,7 @@ import {EditEmployeeForm} from "./EditEmployeeForm";
 
 export const EmployeeCard = ({employee, fetchEmployee}) => {
     return (
-        <Card maxW={"xl"}>
+        <Card maxW={"xl"} mt={"30px"}>
             <CardBody>
                 <Image src={employee.imageUrl}/>
                 <Stack mt={"6"} spacing={"3"}>

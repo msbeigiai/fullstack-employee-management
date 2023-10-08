@@ -1,15 +1,14 @@
 import {useEffect, useState} from "react";
 import {getEmployees} from "../services/client";
-import Header from "./Header.jsx";
 import {EmployeeCard} from "./EmployeeCard";
 import {
     SimpleGrid,
     Stack,
     Divider,
     Spinner,
-    Heading,
-    Box,
+    Heading, Box,
 } from "@chakra-ui/react";
+import AppHeader from "./AppHeader.jsx";
 
 export const AppContent = () => {
     const [employees, setEmployees] = useState([]);
@@ -56,19 +55,19 @@ export const AppContent = () => {
     }
 
     return (
-        <Stack align={"center"}>
-            <Header/>
-            <Divider/>
-            <SimpleGrid columns={3} spacing={10}>
-                {employees.map((employee, index) => (
-                    <EmployeeCard
-                        employee={employee}
-                        key={index}
-                        fetchEmployee={fetchEmployees}
-                    />
-                ))}
-            </SimpleGrid>
-            <Box></Box>
-        </Stack>
+        <Box>
+            <AppHeader />
+            <Stack align={"center"}>
+                <SimpleGrid columns={3} spacing={10}>
+                    {employees.map((employee, index) => (
+                        <EmployeeCard
+                            employee={employee}
+                            key={index}
+                            fetchEmployee={fetchEmployees}
+                        />
+                    ))}
+                </SimpleGrid>
+            </Stack>
+        </Box>
     );
 };
