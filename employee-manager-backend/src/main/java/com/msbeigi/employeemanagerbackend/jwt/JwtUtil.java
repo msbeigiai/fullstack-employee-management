@@ -1,12 +1,11 @@
 package com.msbeigi.employeemanagerbackend.jwt;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
 import java.security.Key;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -14,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class JwtUtil {
 
     private static final String SECRET_KEY =
@@ -67,7 +67,7 @@ public class JwtUtil {
         return getClaims(token).getExpiration().before(today);
     }
 
-    private String getSubject(String token) {
+    public String getSubject(String token) {
         return getClaims(token).getSubject();
     }
 }

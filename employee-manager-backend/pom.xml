@@ -57,6 +57,10 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>${jsonwebtoken.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
