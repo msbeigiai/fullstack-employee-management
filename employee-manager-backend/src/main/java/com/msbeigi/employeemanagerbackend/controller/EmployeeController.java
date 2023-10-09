@@ -1,8 +1,9 @@
 package com.msbeigi.employeemanagerbackend.controller;
 
-import com.msbeigi.employeemanagerbackend.entity.Employee;
 import com.msbeigi.employeemanagerbackend.jwt.JwtUtil;
+import com.msbeigi.employeemanagerbackend.model.EmployeeDTO;
 import com.msbeigi.employeemanagerbackend.model.EmployeeRequestBody;
+import com.msbeigi.employeemanagerbackend.model.EmployeeUpdateRequestBody;
 import com.msbeigi.employeemanagerbackend.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +22,7 @@ public class EmployeeController {
     private final JwtUtil jwtUtil;
 
     @GetMapping
-    public ResponseEntity<List<Employee>> getAllEmployees() throws InterruptedException {
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() throws InterruptedException {
         Thread.sleep(1500);
 //        throw new RuntimeException("Nothing fetched");
         return ResponseEntity.ok()
@@ -31,11 +32,12 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeByID(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(
-                employeeService.findEmployeeById(id),
-                HttpStatus.CREATED
-        );
+    public ResponseEntity<EmployeeDTO> getEmployeeByID(@PathVariable("id") Long id) {
+
+        return ResponseEntity.ok()
+                .body(
+                        employeeService.findEmployeeById(id)
+                );
     }
 
     @PostMapping
@@ -52,20 +54,13 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long id,
-                                                   @RequestBody EmployeeRequestBody employeeRequestBody) {
-
-        Employee updateEmployee = employeeService.findEmployeeById(id);
-
-        updateEmployee.setEmail(employeeRequestBody.email());
-        updateEmployee.setName(employeeRequestBody.name());
-        updateEmployee.setPhone(employeeRequestBody.phone());
-        updateEmployee.setImageUrl(employeeRequestBody.imageUrl());
-        updateEmployee.setJobTitle(employeeRequestBody.jobTitle());
-
-        employeeService.updateEmployee(updateEmployee);
-
-        return new ResponseEntity<>(updateEmployee, HttpStatus.OK);
+    public ResponseEntity<?> updateEmployee(@PathVariable("id") Long id,
+                                                   @RequestBody EmployeeUpdateRequestBody employeeUpdateRequestBody) {
+        employeeService.updateEmployee(id, employeeUpdateRequestBody);
+        return ResponseEntity.ok()
+                .body(
+                        "Employee with id " + id + " has been updated"
+                );
     }
 
     @DeleteMapping("/{id}")

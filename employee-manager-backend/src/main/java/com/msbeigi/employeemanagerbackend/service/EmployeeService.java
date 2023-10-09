@@ -1,7 +1,9 @@
 package com.msbeigi.employeemanagerbackend.service;
 
 import com.msbeigi.employeemanagerbackend.entity.Employee;
+import com.msbeigi.employeemanagerbackend.model.EmployeeDTO;
 import com.msbeigi.employeemanagerbackend.model.EmployeeRequestBody;
+import com.msbeigi.employeemanagerbackend.model.EmployeeUpdateRequestBody;
 
 import java.util.List;
 
@@ -9,11 +11,11 @@ public interface EmployeeService {
 
     void addEmployee(EmployeeRequestBody employeeRequestBody);
 
-    List<Employee> findAllEmployees();
+    List<EmployeeDTO> findAllEmployees();
 
-    Employee updateEmployee(Employee employee);
+    void updateEmployee(Long id, EmployeeUpdateRequestBody employeeUpdateRequestBody);
 
     void deleteEmployee(Long id);
 
-    Employee findEmployeeById(Long id);
+    EmployeeDTO findEmployeeById(Long id);
 }
