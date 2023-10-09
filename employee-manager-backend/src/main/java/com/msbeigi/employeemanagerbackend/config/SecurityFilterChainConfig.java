@@ -19,23 +19,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityFilterChainConfig {
 
-    @Autowired
-    private AuthenticationProvider authenticationProvider;
+    private final AuthenticationProvider authenticationProvider;
+    private final JWTAuthenticationFilter jwtAuthenticationFilter;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
-    @Autowired
-    private JWTAuthenticationFilter jwtAuthenticationFilter;
-
-    @Autowired
-    private AuthenticationEntryPoint authenticationEntryPoint;
-
-    /*public SecurityFilterChainConfig(
+    public SecurityFilterChainConfig(
             JWTAuthenticationFilter jwtAuthenticationFilter,
             AuthenticationProvider authenticationProvider,
             AuthenticationEntryPoint authenticationEntryPoint) {
         this.authenticationProvider = authenticationProvider;
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }*/
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -45,9 +40,10 @@ public class SecurityFilterChainConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(
                                 HttpMethod.POST,
-                                "/api/v1/employees",
-                                "/api/v1/auth/login"
+                                "/api/v1/employees", "/api/v1/auth/login"
                         )
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/hello")
                         .permitAll()
                         .anyRequest()
                         .authenticated()

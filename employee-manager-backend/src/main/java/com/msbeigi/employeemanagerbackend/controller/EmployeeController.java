@@ -1,9 +1,11 @@
 package com.msbeigi.employeemanagerbackend.controller;
 
 import com.msbeigi.employeemanagerbackend.entity.Employee;
+import com.msbeigi.employeemanagerbackend.jwt.JwtUtil;
 import com.msbeigi.employeemanagerbackend.model.EmployeeRequestBody;
 import com.msbeigi.employeemanagerbackend.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+    private final JwtUtil jwtUtil;
 
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployees() throws InterruptedException {
@@ -36,20 +39,16 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Employee> addEmployee(
-            @RequestBody EmployeeRequestBody employeeRequestBody) {
+    public ResponseEntity<?> addEmployee(
+            @RequestBody EmployeeRequestBody request) {
 
-        Employee newEmployee = new Employee();
+        employeeService.addEmployee(request);
 
-        newEmployee.setName(employeeRequestBody.name());
-        newEmployee.setEmail(employeeRequestBody.email());
-        newEmployee.setJobTitle(employeeRequestBody.jobTitle());
-        newEmployee.setPhone(employeeRequestBody.phone());
-        newEmployee.setImageUrl(employeeRequestBody.imageUrl());
+        String token = jwtUtil.issueToken(request.email(), "ROLE_USER");
 
-        employeeService.addEmployee(newEmployee);
-
-        return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, token)
+                .build();
     }
 
     @PutMapping("/{id}")

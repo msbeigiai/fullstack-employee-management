@@ -41,6 +41,7 @@ public class SecurityConfig {
         return daoAuthenticationProvider;
     }
 
+/*
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
         BasicAuthenticationEntryPoint entryPoint =
@@ -48,4 +49,5 @@ public class SecurityConfig {
         entryPoint.setRealmName("user realm");
         return entryPoint;
     }
+*/
 }

@@ -5,5 +5,6 @@ public record EmployeeRequestBody(
         String email,
         String jobTitle,
         String phone,
+        String password,
         String imageUrl) {
 }
