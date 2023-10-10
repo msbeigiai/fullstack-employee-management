@@ -7,6 +7,7 @@ import AuthProvider from "./components/context/AuthContext.jsx";
 import Login from "./components/login/Login.jsx";
 import ProtectedRoute from "./components/shared/ProtectedRoute.jsx";
 import {LinkIcon} from "@chakra-ui/icons";
+import {AppContent} from "./components/AppContent.jsx";
 
 const {ToastContainer} = createStandaloneToast();
 
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
     {
         path: "dashboard/employees",
         element: <ProtectedRoute>
-            <App />
+            <AppContent />
         </ProtectedRoute>
     }
 ])

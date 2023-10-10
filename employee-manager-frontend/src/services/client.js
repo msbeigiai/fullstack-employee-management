@@ -2,10 +2,10 @@ import axios from "axios";
 
 const URL = import.meta.env.VITE_BASE_URL;
 
-const getAuthConfig = () => {
+function getAuthConfig() {
     return {
-        header: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`
         }
     }
 }

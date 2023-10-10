@@ -14,7 +14,7 @@ import {
     PopoverContent,
     useColorModeValue,
     useBreakpointValue,
-    useDisclosure, Container,
+    useDisclosure, Container, Avatar, HStack, VStack,
 } from '@chakra-ui/react'
 import {
     HamburgerIcon,
@@ -22,10 +22,12 @@ import {
     ChevronDownIcon,
     ChevronRightIcon,
 } from '@chakra-ui/icons'
+import {useAuth} from "./context/AuthContext.jsx";
 
 export default function AppHeader() {
-    const { isOpen, onToggle } = useDisclosure()
-
+    const {isOpen, onToggle} = useDisclosure()
+    const {logOut, employee} = useAuth();
+    console.log(employee.roles)
     return (
         <Container maxW={'container.xl'}>
             <Box>
@@ -33,26 +35,26 @@ export default function AppHeader() {
                     bg={useColorModeValue('white', 'gray.800')}
                     color={useColorModeValue('gray.600', 'white')}
                     minH={'60px'}
-                    py={{ base: 2 }}
-                    px={{ base: 4 }}
+                    py={{base: 2}}
+                    px={{base: 4}}
                     borderBottom={1}
                     borderStyle={'solid'}
                     borderColor={useColorModeValue('gray.200', 'gray.900')}
                     align={'center'}>
                     <Flex
-                        flex={{ base: 1, md: 'auto' }}
-                        ml={{ base: -2 }}
-                        display={{ base: 'flex', md: 'none' }}>
+                        flex={{base: 1, md: 'auto'}}
+                        ml={{base: -2}}
+                        display={{base: 'flex', md: 'none'}}>
                         <IconButton
                             onClick={onToggle}
-                            icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
+                            icon={isOpen ? <CloseIcon w={3} h={3}/> : <HamburgerIcon w={5} h={5}/>}
                             variant={'ghost'}
                             aria-label={'Toggle Navigation'}
                         />
                     </Flex>
-                    <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+                    <Flex flex={{base: 1}} justify={{base: 'center', md: 'start'}}>
                         <Text
-                            textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
+                            textAlign={useBreakpointValue({base: 'center', md: 'left'})}
                             fontFamily={'heading'}
                             color={useColorModeValue('gray.800', 'white')}
                             fontSize={"30px"}
@@ -61,37 +63,55 @@ export default function AppHeader() {
                             Employee App Service
                         </Text>
 
-                        <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-                            <DesktopNav />
+                        <Flex display={{base: 'none', md: 'flex'}} ml={10}>
+                            <DesktopNav/>
                         </Flex>
                     </Flex>
 
                     <Stack
-                        flex={{ base: 1, md: 0 }}
+                        flex={{base: 1, md: 0}}
                         justify={'flex-end'}
                         direction={'row'}
                         spacing={6}>
-                        <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}>
-                            Sign In
-                        </Button>
+                        <HStack>
+                            <Avatar
+                                size={"sm"}
+                                src={employee.imageUrl}
+                            />
+                            <VStack
+                                display={{base: "none", md: "flex"}}
+                                alignItems={"flex-start"}
+                                spacing={"1px"}
+                                ml={'2'}
+                            >
+                                <Text fontSize={"sm"}>{employee?.username}</Text>
+                                {employee?.roles.map((role, id) => (
+                                    <Text key={id} fontSize={"xs"} color={"gray.600"}>
+                                        {role}
+                                    </Text>
+                                ))}
+                            </VStack>
+                        </HStack>
                         <Button
                             as={'a'}
-                            display={{ base: 'none', md: 'inline-flex' }}
+                            display={{base: 'none', md: 'inline-flex'}}
                             fontSize={'sm'}
                             fontWeight={600}
                             color={'white'}
-                            bg={'pink.400'}
+                            bg={'gray.600'}
                             href={'#'}
                             _hover={{
-                                bg: 'pink.300',
-                            }}>
-                            Sign Up
+                                bg: 'gray.500',
+                            }}
+                            onClick={logOut}
+                        >
+                            Sign Out
                         </Button>
                     </Stack>
                 </Flex>
 
                 <Collapse in={isOpen} animateOpacity>
-                    <MobileNav />
+                    <MobileNav/>
                 </Collapse>
             </Box>
         </Container>
@@ -146,7 +166,7 @@ const DesktopNav = () => {
     )
 }
 
-const DesktopSubNav = ({ label, href, subLabel }) => {
+const DesktopSubNav = ({label, href, subLabel}) => {
     return (
         <Box
             as="a"
@@ -155,12 +175,12 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
             display={'block'}
             p={2}
             rounded={'md'}
-            _hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}>
+            _hover={{bg: useColorModeValue('pink.50', 'gray.900')}}>
             <Stack direction={'row'} align={'center'}>
                 <Box>
                     <Text
                         transition={'all .3s ease'}
-                        _groupHover={{ color: 'pink.400' }}
+                        _groupHover={{color: 'pink.400'}}
                         fontWeight={500}>
                         {label}
                     </Text>
@@ -170,11 +190,11 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
                     transition={'all .3s ease'}
                     transform={'translateX(-10px)'}
                     opacity={0}
-                    _groupHover={{ opacity: '100%', transform: 'translateX(0)' }}
+                    _groupHover={{opacity: '100%', transform: 'translateX(0)'}}
                     justify={'flex-end'}
                     align={'center'}
                     flex={1}>
-                    <Icon color={'pink.400'} w={5} h={5} as={ChevronRightIcon} />
+                    <Icon color={'pink.400'} w={5} h={5} as={ChevronRightIcon}/>
                 </Flex>
             </Stack>
         </Box>
@@ -183,7 +203,7 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
 
 const MobileNav = () => {
     return (
-        <Stack bg={useColorModeValue('white', 'gray.800')} p={4} display={{ md: 'none' }}>
+        <Stack bg={useColorModeValue('white', 'gray.800')} p={4} display={{md: 'none'}}>
             {NAV_ITEMS.map((navItem) => (
                 <MobileNavItem key={navItem.label} {...navItem} />
             ))}
@@ -191,8 +211,8 @@ const MobileNav = () => {
     )
 }
 
-const MobileNavItem = ({ label, children, href }) => {
-    const { isOpen, onToggle } = useDisclosure()
+const MobileNavItem = ({label, children, href}) => {
+    const {isOpen, onToggle} = useDisclosure()
 
     return (
         <Stack spacing={4} onClick={children && onToggle}>
@@ -219,7 +239,7 @@ const MobileNavItem = ({ label, children, href }) => {
                 )}
             </Box>
 
-            <Collapse in={isOpen} animateOpacity style={{ marginTop: '0!important' }}>
+            <Collapse in={isOpen} animateOpacity style={{marginTop: '0!important'}}>
                 <Stack
                     mt={2}
                     pl={4}
@@ -239,6 +259,4 @@ const MobileNavItem = ({ label, children, href }) => {
     )
 }
 
-const NAV_ITEMS = [
-
-]
+const NAV_ITEMS = []

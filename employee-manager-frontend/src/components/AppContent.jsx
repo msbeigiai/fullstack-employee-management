@@ -4,11 +4,11 @@ import {EmployeeCard} from "./EmployeeCard";
 import {
     SimpleGrid,
     Stack,
-    Divider,
     Spinner,
     Heading, Box,
 } from "@chakra-ui/react";
 import AppHeader from "./AppHeader.jsx";
+import {errorNotification} from "../services/notification.js";
 
 export const AppContent = () => {
     const [employees, setEmployees] = useState([]);
@@ -22,9 +22,13 @@ export const AppContent = () => {
             .then((res) => {
                 setEmployees(res.data);
                 setLoading(false);
+                errorNotification(
+                    err.code,
+                    err.response.data.message
+                );
             })
-            .catch((err) => {
-                setError(err.respone.data.message);
+            .catch(err => {
+                setError(err.response.data.message);
                 setLoading(false);
             });
     };
