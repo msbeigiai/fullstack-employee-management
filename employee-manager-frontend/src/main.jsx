@@ -8,6 +8,7 @@ import Login from "./components/login/Login.jsx";
 import ProtectedRoute from "./components/shared/ProtectedRoute.jsx";
 import {LinkIcon} from "@chakra-ui/icons";
 import {AppContent} from "./components/AppContent.jsx";
+import Signup from "./components/signup/Signup.jsx";
 
 const {ToastContainer} = createStandaloneToast();
 
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
             <Heading>Dashboard</Heading>
             <Link  href={"dashboard/employees"}>Navigate to employees <LinkIcon mx={"2px"} /></Link>
         </ProtectedRoute>
+    },
+    {
+      path: "signup",
+      element: <Signup />
     },
     {
         path: "dashboard/employees",

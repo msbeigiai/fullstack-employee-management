@@ -37,6 +37,15 @@ export async function deleteEmployee(id) {
     }
 }
 
+export const saveEmployee = async (employee) => {
+    // eslint-disable-next-line no-useless-catch
+    try {
+        return await axios.post(`${URL}/api/v1/employees`, employee)
+    } catch (e) {
+        throw e;
+    }
+}
+
 export const login = async (usernameAndPassword) => {
     // eslint-disable-next-line no-useless-catch
     try {
