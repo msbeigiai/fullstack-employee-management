@@ -1,10 +1,12 @@
 spring:
+#  profiles:
+#    active: native
   jackson:
     default-property-inclusion: non_null
   datasource:
     url: jdbc:postgresql://localhost:5432/employee_db
     username: msbeigi
-    password: password
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,3 +16,14 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format-sql: true
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: codeverseexplorers@gmail.com
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
