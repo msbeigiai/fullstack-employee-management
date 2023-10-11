@@ -1,11 +1,14 @@
 package com.msbeigi.employeemanagerbackend.controller;
 
+import com.msbeigi.employeemanagerbackend.event.RegistrationCompleteEvent;
 import com.msbeigi.employeemanagerbackend.jwt.JwtUtil;
 import com.msbeigi.employeemanagerbackend.model.EmployeeDTO;
 import com.msbeigi.employeemanagerbackend.model.EmployeeRequestBody;
 import com.msbeigi.employeemanagerbackend.model.EmployeeUpdateRequestBody;
 import com.msbeigi.employeemanagerbackend.service.EmployeeService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,7 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
     private final JwtUtil jwtUtil;
+    private final ApplicationEventPublisher publisher;
 
     @GetMapping
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() throws InterruptedException {
@@ -42,11 +46,13 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<?> addEmployee(
-            @RequestBody EmployeeRequestBody request) {
+            @RequestBody EmployeeRequestBody employeeRequestBody,
+            final HttpServletRequest request) {
 
-        employeeService.addEmployee(request);
+        EmployeeDTO employeeDTO = employeeService.addEmployee(employeeRequestBody);
+        publisher.publishEvent(new RegistrationCompleteEvent(employeeDTO, applicationUrl(request)));
 
-        String token = jwtUtil.issueToken(request.email(), "ROLE_USER");
+        String token = jwtUtil.issueToken(employeeRequestBody.email(), "ROLE_USER");
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, token)
@@ -67,5 +73,10 @@ public class EmployeeController {
     public ResponseEntity<HttpStatus> deleteEmployeeById(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    private String applicationUrl(HttpServletRequest request) {
+        return "http://"
+                + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
 }

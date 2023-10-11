@@ -47,6 +47,7 @@ public class Employee implements UserDetails {
     private String jobTitle;
     private String phone;
     private String imageUrl;
+    private boolean enabled;
 
     @Column(nullable = false, updatable = false)
     private String employeeCode;

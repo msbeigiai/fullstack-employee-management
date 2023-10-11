@@ -1,12 +1,15 @@
 package com.msbeigi.employeemanagerbackend.service.impl;
 
 import com.msbeigi.employeemanagerbackend.entity.Employee;
+import com.msbeigi.employeemanagerbackend.entity.VerificationToken;
 import com.msbeigi.employeemanagerbackend.exceptions.EmployeeNotFoundException;
+import com.msbeigi.employeemanagerbackend.exceptions.ResourceNotFoundException;
 import com.msbeigi.employeemanagerbackend.model.EmployeeDTO;
 import com.msbeigi.employeemanagerbackend.model.EmployeeDTOMapper;
 import com.msbeigi.employeemanagerbackend.model.EmployeeRequestBody;
 import com.msbeigi.employeemanagerbackend.model.EmployeeUpdateRequestBody;
 import com.msbeigi.employeemanagerbackend.repository.EmployeeRepository;
+import com.msbeigi.employeemanagerbackend.repository.VerificationTokenRepository;
 import com.msbeigi.employeemanagerbackend.service.EmployeeService;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +27,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmployeeDTOMapper employeeDTOMapper;
+    private final VerificationTokenRepository verificationTokenRepository;
 
     @Override
-    public void addEmployee(EmployeeRequestBody employeeRequestBody) {
+    public EmployeeDTO addEmployee(EmployeeRequestBody employeeRequestBody) {
 
-        if (employeeRepository.existsEmployeeByEmail(employeeRequestBody.email())) {
+        if (employeeRepository.existsByEmail(employeeRequestBody.email())) {
             throw new DuplicateRequestException("Email already taken");
         }
 
@@ -40,9 +44,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setPhone(employeeRequestBody.phone());
         employee.setImageUrl(employeeRequestBody.imageUrl());
         employee.setPassword(passwordEncoder.encode(employeeRequestBody.password()));
-
         employee.setEmployeeCode(UUID.randomUUID().toString());
+        employee.setEnabled(false);
+
         employeeRepository.save(employee);
+
+        VerificationToken verificationToken = new VerificationToken(employee);
+        verificationTokenRepository.save(verificationToken);
+
+        // TODO send email to user with token
+
+        return employeeDTOMapper.apply(employee);
     }
 
     @Override
@@ -78,5 +90,16 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(() ->
                         new EmployeeNotFoundException("Employee with id %s not found.".formatted(id)));
         return employeeDTOMapper.apply(employee);
+    }
+
+    @Override
+    public boolean verifyToken(String token) {
+        VerificationToken verificationToken = verificationTokenRepository.findByToken(token)
+                .orElseThrow(() -> new ResourceNotFoundException("token not found!"));
+        Employee employee = employeeRepository.findByEmailIgnoreCase(verificationToken.getEmployee().getEmail())
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found!"));
+        employee.setEnabled(true);
+        employeeRepository.save(employee);
+        return true;
     }
 }
