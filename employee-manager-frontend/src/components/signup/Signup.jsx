@@ -39,7 +39,7 @@ export default function Signup() {
                 bgGradient={{sm: 'linear(to-r, blue.600, purple.600)'}}
             >
                 <Text fontSize={"6xl"} color={"white"} font-weight={"bold"} mb={5}>
-                    <Link href={"www.google.com"} >
+                    <Link href={"www.google.com"}>
                         Enrol now
                     </Link>
                 </Text>
