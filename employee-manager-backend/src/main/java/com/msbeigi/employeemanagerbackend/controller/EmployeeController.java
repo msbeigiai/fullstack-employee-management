@@ -4,14 +4,20 @@ import com.msbeigi.employeemanagerbackend.jwt.JwtUtil;
 import com.msbeigi.employeemanagerbackend.model.EmployeeDTO;
 import com.msbeigi.employeemanagerbackend.model.EmployeeRequestBody;
 import com.msbeigi.employeemanagerbackend.model.EmployeeUpdateRequestBody;
+import com.msbeigi.employeemanagerbackend.model.HttpResponse;
 import com.msbeigi.employeemanagerbackend.service.EmployeeService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/employees")
@@ -20,11 +26,10 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
     private final JwtUtil jwtUtil;
+    private final ApplicationEventPublisher publisher;
 
-    @GetMapping
+    @GetMapping("/allEmployees")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() throws InterruptedException {
-//        Thread.sleep(1500);
-//        throw new RuntimeException("Nothing fetched");
         return ResponseEntity.ok()
                 .body(
                         employeeService.findAllEmployees()
@@ -42,20 +47,44 @@ public class EmployeeController {
 
     @PostMapping
     public ResponseEntity<?> addEmployee(
-            @RequestBody EmployeeRequestBody request) {
+            @RequestBody EmployeeRequestBody employeeRequestBody,
+            final HttpServletRequest request) {
 
-        employeeService.addEmployee(request);
+        EmployeeDTO employeeDTO = employeeService.addEmployee(employeeRequestBody);
 
-        String token = jwtUtil.issueToken(request.email(), "ROLE_USER");
+        return ResponseEntity.created(URI.create(""))
+                .body(
+                        HttpResponse.builder()
+                                .timeStamp(LocalDateTime.now().toString())
+                                .data(Map.of("employee", employeeDTO))
+                                .message("Employee Created")
+                                .status(HttpStatus.CREATED)
+                                .statusCode(HttpStatus.CREATED.value())
+                                .build()
+                );
+    }
+
+    @GetMapping
+    public ResponseEntity<?> confirmEmployeeAccount(@RequestParam("token") String token) {
+        String verifyToken = employeeService.verifyToken(token);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, token)
-                .build();
+                .header(HttpHeaders.AUTHORIZATION, verifyToken)
+                .body(
+                        HttpResponse
+                                .builder()
+                                .timeStamp(LocalDateTime.now().toString())
+                                .data(Map.of("SUCCESS", true))
+                                .message("Account verified")
+                                .status(HttpStatus.OK)
+                                .statusCode(HttpStatus.OK.value())
+                                .build()
+                );
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEmployee(@PathVariable("id") Long id,
-                                                   @RequestBody EmployeeUpdateRequestBody employeeUpdateRequestBody) {
+                                            @RequestBody EmployeeUpdateRequestBody employeeUpdateRequestBody) {
         employeeService.updateEmployee(id, employeeUpdateRequestBody);
         return ResponseEntity.ok()
                 .body(
@@ -67,5 +96,10 @@ public class EmployeeController {
     public ResponseEntity<HttpStatus> deleteEmployeeById(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    private String applicationUrl(HttpServletRequest request) {
+        return "http://"
+                + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
 }

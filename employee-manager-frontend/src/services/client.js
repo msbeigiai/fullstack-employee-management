@@ -13,7 +13,7 @@ function getAuthConfig() {
 export const getEmployees = async () => {
     // eslint-disable-next-line no-useless-catch
     try {
-        return await axios.get(`${URL}/api/v1/employees`, getAuthConfig())
+        return await axios.get(`${URL}/api/v1/employees/allEmployees`, getAuthConfig())
     } catch (e) {
         throw e;
     }
