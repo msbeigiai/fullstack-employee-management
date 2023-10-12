@@ -1,5 +1,7 @@
 package com.msbeigi.employeemanagerbackend.service.impl;
 
+import com.msbeigi.employeemanagerbackend.email.EmailDetails;
+import com.msbeigi.employeemanagerbackend.email.EmailService;
 import com.msbeigi.employeemanagerbackend.entity.Employee;
 import com.msbeigi.employeemanagerbackend.entity.VerificationToken;
 import com.msbeigi.employeemanagerbackend.exceptions.EmployeeNotFoundException;
@@ -28,6 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final PasswordEncoder passwordEncoder;
     private final EmployeeDTOMapper employeeDTOMapper;
     private final VerificationTokenRepository verificationTokenRepository;
+    private final EmailService emailService;
 
     @Override
     public EmployeeDTO addEmployee(EmployeeRequestBody employeeRequestBody) {
@@ -53,6 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         verificationTokenRepository.save(verificationToken);
 
         // TODO send email to user with token
+        emailService.sendSimpleMail(employee.getName(), employee.getEmail(), verificationToken.getToken());
 
         return employeeDTOMapper.apply(employee);
     }
