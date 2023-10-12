@@ -1,6 +1,5 @@
 package com.msbeigi.employeemanagerbackend.service.impl;
 
-import com.msbeigi.employeemanagerbackend.email.EmailDetails;
 import com.msbeigi.employeemanagerbackend.email.EmailService;
 import com.msbeigi.employeemanagerbackend.entity.Employee;
 import com.msbeigi.employeemanagerbackend.entity.VerificationToken;
@@ -20,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
