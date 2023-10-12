@@ -5,6 +5,7 @@ import com.msbeigi.employeemanagerbackend.model.EmployeeRequestBody;
 import com.msbeigi.employeemanagerbackend.model.EmployeeUpdateRequestBody;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EmployeeService {
 
@@ -18,5 +19,5 @@ public interface EmployeeService {
 
     EmployeeDTO findEmployeeById(Long id);
 
-    boolean verifyToken(String token);
+    String verifyToken(String token);
 }

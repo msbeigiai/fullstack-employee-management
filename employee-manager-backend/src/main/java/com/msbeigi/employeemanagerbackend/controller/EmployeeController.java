@@ -1,5 +1,6 @@
 package com.msbeigi.employeemanagerbackend.controller;
 
+import com.msbeigi.employeemanagerbackend.entity.Employee;
 import com.msbeigi.employeemanagerbackend.event.RegistrationCompleteEvent;
 import com.msbeigi.employeemanagerbackend.jwt.JwtUtil;
 import com.msbeigi.employeemanagerbackend.model.EmployeeDTO;
@@ -31,8 +32,6 @@ public class EmployeeController {
 
     @GetMapping("/allEmployees")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() throws InterruptedException {
-//        Thread.sleep(1500);
-//        throw new RuntimeException("Nothing fetched");
         return ResponseEntity.ok()
                 .body(
                         employeeService.findAllEmployees()
@@ -54,9 +53,6 @@ public class EmployeeController {
             final HttpServletRequest request) {
 
         EmployeeDTO employeeDTO = employeeService.addEmployee(employeeRequestBody);
-        publisher.publishEvent(new RegistrationCompleteEvent(employeeDTO, applicationUrl(request)));
-
-        String token = jwtUtil.issueToken(employeeRequestBody.email(), "ROLE_USER");
 
         return ResponseEntity.created(URI.create(""))
                 .body(
@@ -72,13 +68,15 @@ public class EmployeeController {
 
     @GetMapping
     public ResponseEntity<?> confirmEmployeeAccount(@RequestParam("token") String token) {
-        boolean isSuccess = employeeService.verifyToken(token);
+        String verifyToken = employeeService.verifyToken(token);
+
         return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, verifyToken)
                 .body(
                         HttpResponse
                                 .builder()
                                 .timeStamp(LocalDateTime.now().toString())
-                                .data(Map.of("SUCCESS", isSuccess))
+                                .data(Map.of("SUCCESS", true))
                                 .message("Account verified")
                                 .status(HttpStatus.OK)
                                 .statusCode(HttpStatus.OK.value())

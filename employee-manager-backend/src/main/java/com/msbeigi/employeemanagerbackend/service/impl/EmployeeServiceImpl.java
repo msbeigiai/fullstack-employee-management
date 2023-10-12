@@ -6,6 +6,7 @@ import com.msbeigi.employeemanagerbackend.entity.Employee;
 import com.msbeigi.employeemanagerbackend.entity.VerificationToken;
 import com.msbeigi.employeemanagerbackend.exceptions.EmployeeNotFoundException;
 import com.msbeigi.employeemanagerbackend.exceptions.ResourceNotFoundException;
+import com.msbeigi.employeemanagerbackend.jwt.JwtUtil;
 import com.msbeigi.employeemanagerbackend.model.EmployeeDTO;
 import com.msbeigi.employeemanagerbackend.model.EmployeeDTOMapper;
 import com.msbeigi.employeemanagerbackend.model.EmployeeRequestBody;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -31,6 +33,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeDTOMapper employeeDTOMapper;
     private final VerificationTokenRepository verificationTokenRepository;
     private final EmailService emailService;
+    private final JwtUtil jwtUtil;
 
     @Override
     public EmployeeDTO addEmployee(EmployeeRequestBody employeeRequestBody) {
@@ -97,13 +100,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public boolean verifyToken(String token) {
+    public String verifyToken(String token) {
         VerificationToken verificationToken = verificationTokenRepository.findByToken(token)
                 .orElseThrow(() -> new ResourceNotFoundException("token not found!"));
         Employee employee = employeeRepository.findByEmailIgnoreCase(verificationToken.getEmployee().getEmail())
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee not found!"));
         employee.setEnabled(true);
         employeeRepository.save(employee);
-        return true;
+        return jwtUtil.issueToken(employee.getEmail(), "ROLE_USER");
     }
 }
