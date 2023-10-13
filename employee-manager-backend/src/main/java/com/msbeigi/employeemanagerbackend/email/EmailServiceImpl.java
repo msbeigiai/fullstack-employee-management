@@ -16,7 +16,6 @@ public class EmailServiceImpl implements EmailService {
 
     @Value("${spring.mail.username}")
     private String sender;
-    private String host = "http://localhost:8080";
 
     @Override
     @Async
@@ -37,13 +36,13 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public String sendSimpleMail(String name, String to, String token) {
+    public String sendSimpleMail(String name, String to, String token, String url) {
         try {
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
             simpleMailMessage.setSubject(NEW_USER_ACCOUNT_VERIFICATION);
             simpleMailMessage.setFrom(sender);
             simpleMailMessage.setTo(to);
-            simpleMailMessage.setText(EmailUtils.getEmailMessage(name, host, token));
+            simpleMailMessage.setText(EmailUtils.getEmailMessage(name, url, token));
             javaMailSender.send(simpleMailMessage);
             return "Mail sent successfully...";
         } catch (Exception e) {

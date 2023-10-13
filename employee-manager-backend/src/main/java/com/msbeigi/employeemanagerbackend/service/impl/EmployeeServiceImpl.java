@@ -1,6 +1,5 @@
 package com.msbeigi.employeemanagerbackend.service.impl;
 
-import com.msbeigi.employeemanagerbackend.email.EmailService;
 import com.msbeigi.employeemanagerbackend.entity.Employee;
 import com.msbeigi.employeemanagerbackend.entity.VerificationToken;
 import com.msbeigi.employeemanagerbackend.exceptions.EmployeeNotFoundException;
@@ -30,7 +29,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final PasswordEncoder passwordEncoder;
     private final EmployeeDTOMapper employeeDTOMapper;
     private final VerificationTokenRepository verificationTokenRepository;
-    private final EmailService emailService;
+
     private final JwtUtil jwtUtil;
 
     @Override
@@ -53,11 +52,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employeeRepository.save(employee);
 
-        VerificationToken verificationToken = new VerificationToken(employee);
-        verificationTokenRepository.save(verificationToken);
+//        VerificationToken verificationToken = new VerificationToken(employee);
+//        verificationTokenRepository.save(verificationToken);
 
         // TODO send email to user with token
-        emailService.sendSimpleMail(employee.getName(), employee.getEmail(), verificationToken.getToken());
+//        emailService.sendSimpleMail(employee.getName(), employee.getEmail(), verificationToken.getToken());
 
         return employeeDTOMapper.apply(employee);
     }
@@ -106,5 +105,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setEnabled(true);
         employeeRepository.save(employee);
         return jwtUtil.issueToken(employee.getEmail(), "ROLE_USER");
+    }
+
+    @Override
+    public void verifyToken(String token, EmployeeDTO employeeDTO) {
+        Employee employee = employeeRepository.findByEmailIgnoreCase(employeeDTO.email())
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found"));
+        VerificationToken verificationToken = new VerificationToken(employee, token);
+        verificationTokenRepository.save(verificationToken);
     }
 }
