@@ -1,6 +1,7 @@
 package com.msbeigi.employeemanagerbackend.auth;
 
 import com.msbeigi.employeemanagerbackend.entity.Employee;
+import com.msbeigi.employeemanagerbackend.exceptions.AccountNotVerifiedException;
 import com.msbeigi.employeemanagerbackend.jwt.JwtUtil;
 import com.msbeigi.employeemanagerbackend.model.EmployeeDTO;
 import com.msbeigi.employeemanagerbackend.model.EmployeeDTOMapper;
@@ -33,6 +34,10 @@ public class AuthenticationService {
         );
         Employee principal = (Employee) authentication.getPrincipal();
         EmployeeDTO employeeDTO = dtoMapper.apply(principal);
+        if (!principal.getEnabled()) {
+            throw new AccountNotVerifiedException(
+                    "Employee with email " + employeeDTO.email() + " is not verified.");
+        }
         String token = jwtUtil.issueToken(employeeDTO.email(), employeeDTO.roles());
         return new AuthenticationResponse(token, employeeDTO);
     }

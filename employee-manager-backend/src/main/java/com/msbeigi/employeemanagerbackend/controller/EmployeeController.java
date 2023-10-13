@@ -64,7 +64,7 @@ public class EmployeeController {
                 );
     }
 
-    @GetMapping
+    @GetMapping("/confirm")
     public ResponseEntity<?> confirmEmployeeAccount(@RequestParam("token") String token) {
         String verifyToken = employeeService.verifyToken(token);
 

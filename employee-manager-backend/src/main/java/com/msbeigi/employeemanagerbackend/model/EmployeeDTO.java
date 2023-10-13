@@ -11,7 +11,5 @@ public record EmployeeDTO(
         String jobTitle,
         String phone,
         String imageUrl,
-        List<String> roles
-) {
-
+        List<String> roles) {
 }
