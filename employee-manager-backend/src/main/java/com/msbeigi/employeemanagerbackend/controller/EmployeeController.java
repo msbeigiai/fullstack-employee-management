@@ -1,5 +1,6 @@
 package com.msbeigi.employeemanagerbackend.controller;
 
+import com.msbeigi.employeemanagerbackend.event.RegistrationCompleteEvent;
 import com.msbeigi.employeemanagerbackend.jwt.JwtUtil;
 import com.msbeigi.employeemanagerbackend.model.EmployeeDTO;
 import com.msbeigi.employeemanagerbackend.model.EmployeeRequestBody;
@@ -52,6 +53,8 @@ public class EmployeeController {
 
         EmployeeDTO employeeDTO = employeeService.addEmployee(employeeRequestBody);
 
+        publisher.publishEvent(new RegistrationCompleteEvent(employeeDTO, applicationUrl(request)));
+
         return ResponseEntity.created(URI.create(""))
                 .body(
                         HttpResponse.builder()
@@ -64,7 +67,7 @@ public class EmployeeController {
                 );
     }
 
-    @GetMapping
+    @GetMapping("/confirm")
     public ResponseEntity<?> confirmEmployeeAccount(@RequestParam("token") String token) {
         String verifyToken = employeeService.verifyToken(token);
 

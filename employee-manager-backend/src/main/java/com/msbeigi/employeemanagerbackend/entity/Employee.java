@@ -1,10 +1,7 @@
 package com.msbeigi.employeemanagerbackend.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -41,13 +38,11 @@ public class Employee implements UserDetails {
     @Column(nullable = false, updatable = false)
     private Long id;
     private String name;
-
-
     private String email;
     private String jobTitle;
     private String phone;
     private String imageUrl;
-    private boolean enabled;
+    private Boolean enabled;
 
     @Column(nullable = false, updatable = false)
     private String employeeCode;

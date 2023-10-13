@@ -19,4 +19,6 @@ public interface EmployeeService {
     EmployeeDTO findEmployeeById(Long id);
 
     String verifyToken(String token);
+
+    void verifyToken(String token, EmployeeDTO employeeDTO);
 }

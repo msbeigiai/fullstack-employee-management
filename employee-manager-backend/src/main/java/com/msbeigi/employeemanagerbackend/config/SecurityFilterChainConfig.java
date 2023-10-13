@@ -47,7 +47,7 @@ public class SecurityFilterChainConfig {
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/sendMail")
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/employees")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/employees/confirm")
                         .permitAll()
                         .anyRequest()
                         .authenticated()

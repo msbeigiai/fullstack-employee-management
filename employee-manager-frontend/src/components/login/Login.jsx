@@ -32,20 +32,8 @@ export default function Login () {
                 alignItems={"center"}
                 justifyItems={"center"}
                 justifyContent={"center"}
-                bgGradient={{sm: 'linear(to-r, blue.600, purple.600)'}}
+                bgGradient='linear(to-r, green.200, pink.500)'
             >
-                <Text fontSize={"6xl"} color={"white"} font-weight={"bold"} mb={5}>
-                    <Link href={"www.google.com"} >
-                        Enrol now
-                    </Link>
-                </Text>
-                <Image
-                    alt={'Login Image'}
-                    objectFit={'scale-down'}
-                    src={
-                        'https://user-images.githubusercontent.com/40702606/215539167-d7006790-b880-4929-83fb-c43fa74f429e.png'
-                    }
-                />
             </Flex>
         </Stack>
 
