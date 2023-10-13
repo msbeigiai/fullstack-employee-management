@@ -18,14 +18,14 @@ const router = createBrowserRouter([
         element: <Login/>
     },
     {
-        path: "dashboard",
+        path: "/dashboard",
         element: <ProtectedRoute>
             <Heading>Dashboard</Heading>
             <Link  href={"dashboard/employees"}>Navigate to employees <LinkIcon mx={"2px"} /></Link>
         </ProtectedRoute>
     },
     {
-      path: "signup",
+      path: "/signup",
       element: <Signup />
     },
     {
