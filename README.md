@@ -14,6 +14,9 @@ Users can **register**, **reset their passwords**, and **change their passwords*
 and fully-featured project for both beginners and experienced developers. Explore, experiment, and contribute to this
 open-source gem!
 
+Feel free to clone and deploy this application yourself, or contribute to this open-source gem. 🌟
+
+
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
