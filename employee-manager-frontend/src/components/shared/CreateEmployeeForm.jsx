@@ -43,7 +43,7 @@ export const CreateEmployeeForm = ({onSuccess}) => {
                         .email('Invalid email address')
                         .required('Required'),
                     password: Yup.string()
-                        .min(8, 'Must be at least 8 chars or more.')
+                        .min(6, 'Must be at least 6 chars or more.')
                         .max(20, 'Must be 20 characters or less')
                         .required('Required'),
                     jobTitle: Yup.string()
