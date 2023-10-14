@@ -23,6 +23,17 @@ public class SecurityFilterChainConfig {
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationEntryPoint authenticationEntryPoint;
 
+    private final static String[] VERIFICATION_URLS = {
+            "/api/v1/employees/confirm",
+            "/api/v1/employees/resendVerifyToken"
+    };
+
+    private final static String[] RESET_PASSWORD_URLS = {
+            "/api/v1/employees/resetPassword",
+            "/api/v1/employees/savePassword",
+            "/api/v1/employees/changePassword"
+    };
+
     public SecurityFilterChainConfig(
             JWTAuthenticationFilter jwtAuthenticationFilter,
             AuthenticationProvider authenticationProvider,
@@ -47,7 +58,9 @@ public class SecurityFilterChainConfig {
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/sendMail")
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/employees/confirm")
+                        .requestMatchers(HttpMethod.GET, VERIFICATION_URLS)
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST, RESET_PASSWORD_URLS)
                         .permitAll()
                         .anyRequest()
                         .authenticated()
