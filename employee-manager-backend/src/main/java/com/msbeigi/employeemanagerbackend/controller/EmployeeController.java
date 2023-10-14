@@ -177,6 +177,23 @@ public class EmployeeController {
 
     }
 
+    @GetMapping("/savePassword")
+    public ResponseEntity<?> getPasswordReset(@RequestParam("token") String token) {
+
+        return ResponseEntity.ok()
+                .body(
+                        HttpResponse.builder()
+                                .timeStamp(LocalDateTime.now().toString())
+                                .data(Map.of("Get token", token))
+                                .message("Get token")
+                                .status(HttpStatus.OK)
+                                .statusCode(HttpStatus.OK.value())
+                                .build()
+                );
+
+
+    }
+
     @PostMapping("/changePassword")
     public ResponseEntity<?> changePassword(@RequestBody PasswordModel passwordModel) {
         Employee employee = employeeService.findByEmailIgnoreCase(passwordModel.email());

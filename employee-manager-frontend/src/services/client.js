@@ -1,4 +1,5 @@
 import axios from "axios";
+import {addMethod} from "yup";
 
 const URL = import.meta.env.VITE_BASE_URL;
 
@@ -41,6 +42,33 @@ export const saveEmployee = async (employee) => {
     // eslint-disable-next-line no-useless-catch
     try {
         return await axios.post(`${URL}/api/v1/employees`, employee)
+    } catch (e) {
+        throw e;
+    }
+}
+
+export const changePassword = async (employee) => {
+    // eslint-disable-next-line no-useless-catch
+    try {
+        return await axios.post(`${URL}/api/v1/employee/changePassword`, employee);
+    } catch (e) {
+        throw e;
+    }
+}
+
+export const resetPassword = async (email) => {
+    // eslint-disable-next-line no-useless-catch
+    try {
+        return await axios.post(`${URL}/api/v1/employees/resetPassword`, email);
+    } catch (e) {
+        throw e;
+    }
+}
+
+export const getPasswordReset = async (token) => {
+    // eslint-disable-next-line no-useless-catch
+    try {
+        return await axios.post(`${URL}/api/v1/employees/savePassword?token=${token}`);
     } catch (e) {
         throw e;
     }

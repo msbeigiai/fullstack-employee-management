@@ -9,6 +9,8 @@ import ProtectedRoute from "./components/shared/ProtectedRoute.jsx";
 import {LinkIcon} from "@chakra-ui/icons";
 import {AppContent} from "./components/AppContent.jsx";
 import Signup from "./components/signup/Signup.jsx";
+import {ResetPasswordForm} from "./components/password/ResetPasswordForm.jsx";
+import {ResetPassword} from "./components/password/ResetPassword.jsx";
 
 const {ToastContainer} = createStandaloneToast();
 
@@ -33,6 +35,14 @@ const router = createBrowserRouter([
         element: <ProtectedRoute>
             <AppContent />
         </ProtectedRoute>
+    },
+    {
+        path: "/resetPassword",
+        element: <ResetPassword />
+    },
+    {
+        path: "/savePassword",
+        element: <h1>Save password</h1>
     }
 ])
 

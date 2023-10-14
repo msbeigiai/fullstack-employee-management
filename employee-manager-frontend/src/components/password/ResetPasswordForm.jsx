@@ -1,10 +1,9 @@
-import {Alert, AlertIcon, Box, Button, FormLabel, Input, Stack} from "@chakra-ui/react";
 import {Form, Formik, useField} from "formik";
-import {useAuth} from "../context/AuthContext.jsx";
+import {Alert, AlertIcon, Box, Button, FormLabel, Input, Stack} from "@chakra-ui/react";
+import * as Yup from "yup";
+import {login, resetPassword} from "../../services/client.js";
 import {useNavigate} from "react-router-dom";
-import * as Yup from 'yup';
-import {errorNotification} from "../../services/notification.js";
-
+import {errorNotification, successNotification} from "../../services/notification.js";
 
 const MyTextInput = ({label, ...props}) => {
     const [field, meta] = useField(props);
@@ -22,70 +21,62 @@ const MyTextInput = ({label, ...props}) => {
         </Box>
     );
 }
-export default function LoginForm() {
-    const {login} = useAuth();
+export const ResetPasswordForm = () => {
     const navigate = useNavigate();
-
     return (
         <>
             <Formik
                 validateOnMount={true}
+                initialValues={{email: ""}}
                 validationSchema={
                     Yup.object({
-                        username: Yup.string()
+                        email: Yup.string()
                             .email("must be a valid email")
-                            .required("Email is required"),
-                        password: Yup.string()
-                            .max(20, "Password can not be more that 20 characters")
-                            .required("Password is required")
+                            .required("Email is required")
                     })
                 }
-                initialValues={{username: '', password: ''}}
                 onSubmit={(values, {setSubmitting}) => {
                     setSubmitting(true);
-                    login(values).then(() => {
-                        navigate("/dashboard")
-                        console.log("Successfully logged in");
+                    resetPassword(values).then(() => {
+                        navigate("/")
+                        console.log("Reset link sent successfully")
+                        successNotification(
+                            "Reset password",
+                            "Password reset successfully, check your email!"
+                        )
                     }).catch(err => {
                         errorNotification(
                             err.code,
                             err.response.data.message
-                        );
+                        )
                     }).finally(() => {
                         setSubmitting(false);
                     })
                 }}
-
             >
                 {({isValid, isSubmitting}) => (
                     <Form>
                         <Stack spacing={"17px"}>
                             <MyTextInput
                                 label={"Email"}
-                                name={"username"}
+                                name={"email"}
                                 type={"email"}
-                                placeholder={"msbeigi83@gmail.com"}
-                            />
-                            <MyTextInput
-                                label={"Password"}
-                                name={"password"}
-                                type={"password"}
-                                placeholder={"Type your password"}
+                                placeholder={"test@example.com"}
                             />
                             <Button
                                 isDisabled={(!isValid || isSubmitting)}
                                 type={"submit"}
                             >
-                                Login
+                                Send Link
                             </Button>
                         </Stack>
                     </Form>
                 )}
-
             </Formik>
         </>
     )
 }
+
 
 
 

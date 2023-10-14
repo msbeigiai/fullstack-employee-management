@@ -1,7 +1,7 @@
 import {useAuth} from "../context/AuthContext.jsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
-import {Flex, Heading, Link, Stack, Text, Image} from "@chakra-ui/react";
+import {Flex, Heading, Link, Stack} from "@chakra-ui/react";
 import LoginForm from "./LoginForm.jsx";
 
 export default function Login () {
@@ -23,6 +23,7 @@ export default function Login () {
                     <Link color={"blue.500"} href={"/signup"}>
                         Don't have an account? Signup now
                     </Link>
+                    <Link color={"blue.600"} href={"/resetPassword"} >forgot your password?</Link>
                 </Stack>
             </Flex>
             <Flex

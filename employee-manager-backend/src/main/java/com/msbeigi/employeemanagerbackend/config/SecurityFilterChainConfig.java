@@ -25,7 +25,8 @@ public class SecurityFilterChainConfig {
 
     private final static String[] VERIFICATION_URLS = {
             "/api/v1/employees/confirm",
-            "/api/v1/employees/resendVerifyToken"
+            "/api/v1/employees/resendVerifyToken",
+            "/api/v1/employees/savePassword"
     };
 
     private final static String[] RESET_PASSWORD_URLS = {
