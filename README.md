@@ -2,27 +2,24 @@
 
 ## Overview
 
-This is a full-stack web application in Java Spring framework for backend and React.js
-for frontend that I have developed.
-It provides for JWT user authentication and authorization, and fully CRUD operations
-by using most common Spring
-framework libraries **Spring Security, Spring Web, Spring Data JPA,
-Spring JDBC** for backend and **React**, **ReactRouter**
-and **Chakra** technologies for frontend, and also **Postgres** as a database. \
-All the `Unit tests` and `Integration tests` are implemented and the application
-is fully **CI/CD** compatible. \
-The backend is fully automated deployable
-in **AWS Elastic BeansTalk** and frontend is fully automated deployable in **AWS Amplify**.
-Also using **AWS S3** to store profile pictures.
+This GitHub repository hosts a comprehensive **full-stack web application** crafted with the **Java Spring framework**
+for the backend and **React.js** for the frontend. It's a robust system featuring **JWT-based user authentication and
+authorization**, along with complete **CRUD (Create, Read, Update, Delete) operations**, powered by essential Spring
+framework libraries like **Spring Security**, **Spring Web**, **Spring Data JPA**, and **Spring JDBC** on the server
+side. For the user interface, we've harnessed the capabilities of **React**, **ReactRouter**, and the sleek **Chakra**
+framework. As the underlying database, we rely on **Postgres**.
+
+This repository not only showcases the core functionality of the application but also provides a rich user experience.
+Users can **register**, **reset their passwords**, and **change their passwords** effortlessly, making it a compelling
+and fully-featured project for both beginners and experienced developers. Explore, experiment, and contribute to this
+open-source gem!
 
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
-  - [Backend (Spring Framework)](#backend-spring-framework)
-  - [Frontend (React)](#frontend-react)
-- [Configuration](#configuration)
-- [Usage](#usage)
+    - [Backend (Spring Framework)](#backend-spring-framework)
+    - [Frontend (React)](#frontend-react)
 
 ## Prerequisites
 
@@ -33,7 +30,8 @@ Before you begin, ensure you have met the following requirements:
 
 ## Getting Started
 
-To get this project up and running, follow the steps below for both the backend (Spring Framework) and frontend (React) components.
+To get this project up and running, follow the steps below for both the backend (Spring Framework) and frontend (React)
+components.
 
 ### Backend (Spring Framework)
 
@@ -48,12 +46,16 @@ To get this project up and running, follow the steps below for both the backend 
 2. Navigate to the project directory:
 
    ```bash
-    cd spring-full-stack
+    cd fullstack-employee-management
    ```
+
+**Note: Before running the application make sure your Postgres database is up and running.** \
+**You also need to run `create database employee_db` query in your Postgres to create database.**
 
 3. Navigate to the backend folder and run:
 
    ```bash
+   cd fullstack-employee-backend
    mvn clean run
    ```
 
@@ -67,48 +69,11 @@ preceeding command will run the backend application
 
 1. Navigate back to frontend, then navigate to react folder and run:
 
-```bach
-cd ../frontend/react
-docker build . -t msbeigiai/msbeigi-react
-docker push msbeigiai/msbeigi-react
-```
+    ```bach
+    cd ../fullstack-employee-frontend
+    npm run dev
+    ```
 
-this will also push latest version of frontend into Docker hub. 2. To boot up the entire project navigate back to the project root and then run docker compose command:
 
-```bash
-cd spring-boot-example/
-docker compose up -d
-```
 
-### Configuration
 
-1. In case you see error booting up backend just navigate inside `postgres` database by running:
-
-```bash
-docker exec -it postgres bash
-```
-
-and then run:
-
-```bash
-psql -U msbeigi
-```
-
-while you are prompted for password, supply `password`.\
-inside postgres database create `customer` database by writing:
-
-```sql
-CREATE DATABASE customer;
-```
-
-by now your application must be up and running.
-
-### Usage
-
-By configuring the project as above guidelines, project can run perfectly.
-
-### If you have any question feel free to ask me.
-
-```
-
-```
