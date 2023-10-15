@@ -53,6 +53,7 @@ components.
    ```
 
 **Note: Before running the application make sure your Postgres database is up and running.** \
+*You can install postgres by Docker or navigate to the official website and install it in your local machine whether you hvae Mac or Linux or Windows.*\
 **You also need to run `create database employee_db` query in your Postgres to create database.**
 
 3. Navigate to the backend folder and run:
