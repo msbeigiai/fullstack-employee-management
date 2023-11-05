@@ -50,10 +50,7 @@ public class SecurityFilterChainConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(
-                                HttpMethod.POST,
-                                "/api/v1/employees", "/api/v1/auth/login"
-                        )
+                        .requestMatchers(HttpMethod.POST,"/api/v1/employees", "/api/v1/auth/login")
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/hello")
                         .permitAll()
